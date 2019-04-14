@@ -14,13 +14,13 @@ import the file into the main.dart or another file you want to use
 
 You can use them like react natiave example: 
 
-div('stack', [
-  //content
-], context)
+div('stack', [<br>
+  //content<br>
+], context)<br>
 
-div('Container', [
-  //content
-], contex)
+div('Container', [<br>
+  //content<br>
+], contex)<br>
 
 <h4>for components:</h4>
 use ID, text (Required), and actions (not required) for components 
@@ -33,11 +33,11 @@ Be sure add this into the return or containers;
 
 Use the funtion you want here, in this case we will use css function:
 
-css(style){
-  var sheet = {
-    'ID NAME': {
-      'color': Colors.white 
-    }
-  }
-  return sheet[style];
+css(style){<br>
+  var sheet = {<br>
+    'ID NAME': {<br>
+      'color': Colors.white <br>
+    }<br>
+  }<br>
+  return sheet[style];<br>
 }
