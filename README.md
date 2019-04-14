@@ -43,6 +43,6 @@ css(style){<br>
 }
 
 <br>
-<img src="https://ibb.co/nwLCSrD">
-<img src="https://ibb.co/WKz2cZM">
-<img src="https://ibb.co/sJz1CVh">
+<img src="https://ibb.co/nwLCSrD" />
+<img src="https://ibb.co/WKz2cZM" />
+<img src="https://ibb.co/sJz1CVh" />
