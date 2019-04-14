@@ -35,9 +35,9 @@ Use the funtion you want here, in this case we will use css function:
 
 css(style){<br>
   var sheet = {<br>
-    'ID NAME': {<br>
-      'color': Colors.white <br>
-    }<br>
+    ////'ID NAME': {<br>
+      ////'color': Colors.white <br>
+   //// }<br>
   }<br>
   return sheet[style];<br>
 }
