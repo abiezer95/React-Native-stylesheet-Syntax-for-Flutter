@@ -1,4 +1,4 @@
-# React-Native-stylesheet-Syntax-for-Flutter
+# Stylesheet-Syntax-for-Flutter
 
 Components added for style css syntax like react native;
 
