@@ -43,6 +43,5 @@ css(style){<br>
 }
 
 <br>
-![mio](https://ibb.co/nwLCSrD)
-![mio](https://ibb.co/WKz2cZM)
-![mio](https://ibb.co/sJz1CVh)
+
+
