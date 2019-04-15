@@ -5,7 +5,7 @@ Components added for style css syntax like react native;
 <ul>
   <li>Raise Button</li>
   <li>stack</li>
-  <li>continer</li>
+  <li>container</li>
 </ul>
 
 <h1>USAGE: </h1>
