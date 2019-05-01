@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget{
-  final String text;
-  final String type;
-  final id;
+  final String text, type;
+  final style;
   final onPressed;
   
   Button({
     @required this.text,
     this.onPressed,
     this.type = '',
-    this.id = ''
+    this.style = ''
   }); 
   
   @override
   Widget build(BuildContext context){
     var all;
-    if(type == null || type == '') all = widgets(['button', text, onPressed], id);
-    if(type == 'flatButton' || type == 'flat') all = widgets(['flatButton', text, onPressed], id);
+    if(type == null || type == '') all = widgets(['button', text, onPressed], style, '');
+    if(type == 'flatButton' || type == 'flat') all = widgets(['flatButton', text, onPressed], style, '');
     return all;
   }
 }
 
 class Input extends StatelessWidget{
-  final String name;
-  final String type;
-  final String placeholder;
-  final String label;
-  final id;
+  final String name, type, placeholder, hintText;
+  final autocorrect;
+  final autofocus;
+  final style;
   final onChange;
   
   
@@ -36,32 +34,33 @@ class Input extends StatelessWidget{
     this.onChange = '',
     this.placeholder = '',
     this.type = '',
-    this.id = '',
-    this.label = ''
+    this.style = '',
+    this.hintText = '',
+    this.autocorrect = false,
+    this.autofocus = false
   }); 
   
   @override
   Widget build(BuildContext context){ 
-    if(type == 'password') return widgets(['password', name, onChange, type, label], id);
-    else return widgets(['input', name, onChange, type, label], id);
+    if(type == 'password') return widgets(['password', name, type], style, {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange});
+    
+    else return widgets(['input', name, type], style, {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange, 'placeholder': placeholder});
   }
 }
 
-widgets(params, style){
+class Br extends StatelessWidget{
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(height: 10,);
+  }
+}
+
+widgets(params, style, optional){
   String action; 
-  String placeholder; 
-  String label; 
 
   if(style == '' || style == null || style == false) style = {};
-
-  // if(params.length==3){
-  //   placeholder = params[3];
-  //   label = params[4];
-  // } 
+  if(optional == '' || optional == null || optional == false) optional = {'autofocus': false, 'autocorrect': false};
   
-  if(style['autofocus']==null) style['autofocus'] = false;
-  if(style['autocorrect']==null) style['autocorrect'] = false;
-
   final component = {
     'button': RaisedButton(
       onPressed: (){
@@ -91,24 +90,34 @@ widgets(params, style){
       disabledColor: style['disabledColor'],
     ),
     'input': TextField(
-      autocorrect: style['autocorrect'],
-      autofocus: style['autofocus'],
+      autocorrect: optional['autocorrect'],
+      autofocus: optional['autocorrect'],
       style: style['text'],
       decoration: InputDecoration(
-        hintText: placeholder,
-        labelText: label
+        hintText: optional['hintText'],
+        labelText: optional['placeholder']
       ),
     ),
-    'password': ''
+    'password': TextField(
+      obscureText: true,
+      autocorrect: optional['autocorrect'],
+      autofocus: optional['autocorrect'],
+      style: style['text'],
+      decoration: InputDecoration(
+        hintText: optional['hintText'],
+        labelText: optional['placeholder']
+      ),
+    ),
   };
   
   return component[params[0]];
 }
 
 div(type, context){
+  String what = type[0].toLowerCase();
   
-  if(type[0]=='stack'){
-    type.remove('stack');
+  if(what=='stack'){
+    type.remove(what);
     return Stack(children: <Widget>[
       ListView.builder(
         itemCount: type.length,
@@ -119,13 +128,13 @@ div(type, context){
     ],);
   }
 
-  if(type[0]=='container'){
+  if(what=='container'){
     return Container(
       child: type[1]
     );
   }
   
-  if(type[0]=='content'){
+  if(what=='content'){
     type.remove('content');
     return ListView.builder(
           itemCount: type.length,
