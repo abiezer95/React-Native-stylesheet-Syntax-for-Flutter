@@ -4,20 +4,27 @@ class Button extends StatelessWidget{
   final String text, type;
   final style;
   final onPressed;
+  final bool isExtended;
+  final List child;
   
   Button({
-    @required this.text,
     this.onPressed,
+    this.child,
+    this.text = '',
     this.type = '',
-    this.style = ''
+    this.style = '',
+    this.isExtended = false
   }); 
   
   @override
   Widget build(BuildContext context){
     var all;
-    if(type == null || type == '') all = widgets(['button', text, onPressed], style, '');
-    if(type == 'flatButton' || type == 'flat') all = widgets(['flatButton', text, onPressed], style, '');
-    return all;
+
+    (type == null || type == '' || type == 'button') ? all = 'button' : 
+    (type == 'flat' || type == 'flatButton') ? all = 'flatButton' : 
+    (type == 'float' || type == 'floatingActionButton') ? all = 'floatingActionButton' : all = '';
+
+    return widgets([all, text, onPressed, isExtended, child], style, '', child);
   }
 }
 
@@ -27,7 +34,6 @@ class Input extends StatelessWidget{
   final autofocus;
   final style;
   final onChange;
-  
   
   Input({
     @required this.name,
@@ -42,9 +48,10 @@ class Input extends StatelessWidget{
   
   @override
   Widget build(BuildContext context){ 
-    if(type == 'password') return widgets(['password', name, type], style, {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange});
-    
-    else return widgets(['input', name, type], style, {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange, 'placeholder': placeholder});
+    var all;
+    (type == 'password') ? all = "password" : all = "input";
+
+    return widgets([all, name, type, false], style, {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange, 'placeholder': placeholder}, '');
   }
 }
 
@@ -55,12 +62,13 @@ class Br extends StatelessWidget{
   }
 }
 
-widgets(params, style, optional){
-  String action; 
+widgets(params, style, optionalInput, optional){
+  String action = params[2]; 
 
   if(style == '' || style == null || style == false) style = {};
-  if(optional == '' || optional == null || optional == false) optional = {'autofocus': false, 'autocorrect': false};
-  
+  if(optional == '' || optional == null || optional == false) optional = [];
+  if(optionalInput == '' || optionalInput == null || optionalInput == false) optionalInput = {'autofocus': false, 'autocorrect': false};
+
   final component = {
     'button': RaisedButton(
       onPressed: (){
@@ -89,23 +97,47 @@ widgets(params, style, optional){
       colorBrightness: style['colorBrightness'],
       disabledColor: style['disabledColor'],
     ),
+    'floatingActionButton': FloatingActionButton(
+      onPressed: (){
+        print(action);
+      },
+  
+      isExtended: params[3],
+      backgroundColor: style['background'],
+      foregroundColor: style['foregroundColor'],
+      shape: style['shape'],
+      elevation: style['elevation'],
+      highlightElevation: style['elevation'],
+      disabledElevation: style['disabledElevation'],
+      materialTapTargetSize: style['materialTapTargetSize'],
+      child: Stack(children: <Widget>[
+        // Text(params[1], style: style['text']),
+        ListView.builder(
+        itemCount: optional.length,
+        itemBuilder: (context, index){
+          return optional[index];
+        },
+      ),
+      ],)
+      
+    ),
     'input': TextField(
-      autocorrect: optional['autocorrect'],
-      autofocus: optional['autocorrect'],
+      autocorrect: optionalInput['autocorrect'],
+      autofocus: optionalInput['autocorrect'],
       style: style['text'],
       decoration: InputDecoration(
-        hintText: optional['hintText'],
-        labelText: optional['placeholder']
+        hintText: optionalInput['hintText'],
+        labelText: optionalInput['placeholder']
       ),
     ),
     'password': TextField(
       obscureText: true,
-      autocorrect: optional['autocorrect'],
-      autofocus: optional['autocorrect'],
+      autocorrect: optionalInput['autocorrect'],
+      autofocus: optionalInput['autocorrect'],
       style: style['text'],
       decoration: InputDecoration(
-        hintText: optional['hintText'],
-        labelText: optional['placeholder']
+        hintText: optionalInput['hintText'],
+        labelText: optionalInput['placeholder']
       ),
     ),
   };
@@ -143,6 +175,5 @@ div(type, context){
           }
         );
   }
-
 }
 
