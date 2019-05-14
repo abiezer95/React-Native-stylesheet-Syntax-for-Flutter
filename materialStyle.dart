@@ -5,14 +5,14 @@ class Button extends StatelessWidget{
   final style;
   final onPressed;
   final bool isExtended;
-  final List child;
+  final bool mini;
   
   Button({
     this.onPressed,
-    this.child,
-    this.text = '',
-    this.type = '',
-    this.style = '',
+    this.mini = false,
+    this.text = "",
+    this.type = "",
+    this.style = "",
     this.isExtended = false
   }); 
   
@@ -24,7 +24,7 @@ class Button extends StatelessWidget{
     (type == 'flat' || type == 'flatButton') ? all = 'flatButton' : 
     (type == 'float' || type == 'floatingActionButton') ? all = 'floatingActionButton' : all = '';
 
-    return widgets([all, text, onPressed, isExtended, child], style, '', child);
+    return widgets([all, text, onPressed, isExtended, mini], style, '');
   }
 }
 
@@ -51,7 +51,7 @@ class Input extends StatelessWidget{
     var all;
     (type == 'password') ? all = "password" : all = "input";
 
-    return widgets([all, name, type, false], style, {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange, 'placeholder': placeholder}, '');
+    return widgets([all, name, type, false, false], style, {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange, 'placeholder': placeholder});
   }
 }
 
@@ -62,13 +62,13 @@ class Br extends StatelessWidget{
   }
 }
 
-widgets(params, style, optionalInput, optional){
-  String action = params[2]; 
+widgets(params, style, optionalInput){
+  String action = params[2];
 
   if(style == '' || style == null || style == false) style = {};
-  if(optional == '' || optional == null || optional == false) optional = [];
   if(optionalInput == '' || optionalInput == null || optionalInput == false) optionalInput = {'autofocus': false, 'autocorrect': false};
 
+  print(params);
   final component = {
     'button': RaisedButton(
       onPressed: (){
@@ -110,16 +110,8 @@ widgets(params, style, optionalInput, optional){
       highlightElevation: style['elevation'],
       disabledElevation: style['disabledElevation'],
       materialTapTargetSize: style['materialTapTargetSize'],
-      child: Stack(children: <Widget>[
-        // Text(params[1], style: style['text']),
-        ListView.builder(
-        itemCount: optional.length,
-        itemBuilder: (context, index){
-          return optional[index];
-        },
-      ),
-      ],)
-      
+      child: Text(params[1], style: style['text']),
+      mini: params[4]
     ),
     'input': TextField(
       autocorrect: optionalInput['autocorrect'],
