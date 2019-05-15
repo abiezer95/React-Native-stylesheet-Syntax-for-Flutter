@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget{
-  final String text, type;
-  final style;
-  final onPressed;
+  final String text, type, tooltip;
   final bool isExtended;
   final bool mini;
+  final style;
+  final icon;
+  final onPressed;
   
   Button({
-    this.onPressed,
     this.mini = false,
+    this.isExtended = false,
+    this.onPressed,
     this.text = "",
     this.type = "",
     this.style = "",
-    this.isExtended = false
+    this.icon = "",
+    this.tooltip = "",
+    
   }); 
   
   @override
@@ -22,9 +26,10 @@ class Button extends StatelessWidget{
 
     (type == null || type == '' || type == 'button') ? all = 'button' : 
     (type == 'flat' || type == 'flatButton') ? all = 'flatButton' : 
-    (type == 'float' || type == 'floatingActionButton') ? all = 'floatingActionButton' : all = '';
+    (type == 'float' || type == 'floatingActionButton') ? all = 'floatingActionButton' : 
+    (type == 'IconButton' || type == 'iconbutton' || type == 'iconButton') ? all = 'IconButton' : all = '';
 
-    return widgets([all, text, onPressed, isExtended, mini], style, '');
+    return widgets([all, text, onPressed, isExtended, mini, icon, tooltip], style, '');
   }
 }
 
@@ -51,7 +56,10 @@ class Input extends StatelessWidget{
     var all;
     (type == 'password') ? all = "password" : all = "input";
 
-    return widgets([all, name, type, false, false], style, {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange, 'placeholder': placeholder});
+    return widgets(
+        [all, name, type, false, false, '', ''], style, 
+        {"hintText": hintText, "autocorrect": autocorrect, "autofocus": autofocus, "onChange": onChange, 'placeholder': placeholder}
+    );
   }
 }
 
@@ -67,6 +75,7 @@ widgets(params, style, optionalInput){
 
   if(style == '' || style == null || style == false) style = {};
   if(optionalInput == '' || optionalInput == null || optionalInput == false) optionalInput = {'autofocus': false, 'autocorrect': false};
+  if(params[5] == '' || params[5] == null || params[5] == false) params[5] = Icons.home;
 
   print(params);
   final component = {
@@ -111,8 +120,16 @@ widgets(params, style, optionalInput){
       disabledElevation: style['disabledElevation'],
       materialTapTargetSize: style['materialTapTargetSize'],
       child: Text(params[1], style: style['text']),
-      mini: params[4]
+      mini: params[4],
+      tooltip: params[6],
     ),
+    'IconButton': IconButton(
+        onPressed: () {
+          print(action);
+        },
+        icon: Icon(params[5]),
+        tooltip: params[6],
+     ),
     'input': TextField(
       autocorrect: optionalInput['autocorrect'],
       autofocus: optionalInput['autocorrect'],
