@@ -49,7 +49,7 @@ class Input extends StatelessWidget{
     this.hintText = '',
     this.autocorrect = false,
     this.autofocus = false
-  }); 
+  });
   
   @override
   Widget build(BuildContext context){ 
@@ -154,9 +154,24 @@ widgets(params, style, optionalInput){
   return component[params[0]];
 }
 
+tt(params){
+  if(isArray(params)){
+    if(params.length == 1){
+      return Text(params[0]);
+    }else if(params.length > 0){
+      return Text(params[0], style: params[1]);
+    }
+  }else{
+    return Text(params);
+  }
+}
+
 div(type, context){
   String what = type[0].toLowerCase();
-  
+  var style = {};
+
+  if(isArray(context) && context.length > 0) style = context[1];
+
   if(what=='stack'){
     type.remove(what);
     return Stack(children: <Widget>[
@@ -171,7 +186,12 @@ div(type, context){
 
   if(what=='container'){
     return Container(
-      child: type[1]
+      child: type[1],
+      width: style['width'],
+      height: style['height'],
+      padding: style['padding'],
+      margin: style['margin'],
+      transform: style['transform']
     );
   }
   
@@ -186,3 +206,7 @@ div(type, context){
   }
 }
 
+bool isArray(type) {
+  type = type.toString();
+  return type.lastIndexOf(']') == type.length - 1;
+}
