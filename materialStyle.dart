@@ -169,8 +169,14 @@ tt(params){
 div(type, context){
   String what = type[0].toLowerCase();
   var style = {};
-
-  if(isArray(context) && context.length > 0) style = context[1];
+  
+  if(isArray(context) && context.length > 0){
+    style = context[1];
+    // if(!style.containsKey('mainAxisAlignment')){
+    //   MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start;
+    //   style['mainAxisAlignment'] = mainAxisAlignment;
+    // }
+  } 
 
   if(what=='stack'){
     type.remove(what);
@@ -203,6 +209,37 @@ div(type, context){
             return type[index];
           }
         );
+  }
+  
+  if(what=='center'){
+    type.remove('center');
+    return Center(
+      child: ListView.builder(
+          itemCount: type.length,
+          itemBuilder: (context, index){
+            return type[index];
+          }
+        ),
+      key: style['key'],
+      widthFactor: style['width'],
+      heightFactor: style['height']
+    );
+  }
+  
+  if(what=='column'){
+    type.remove('column');
+    return Column(
+      children: <Widget>[
+        type[0]
+      ],
+      // key: style['key'],
+      // mainAxisAlignment: MainAxisAlignment.start,
+      // mainAxisSize: MainAxisSize.max,
+      // crossAxisAlignment: CrossAxisAlignment.center,
+      // textDirection: style['textDirection'],
+      // verticalDirection: VerticalDirection.down,
+      // textBaseline: style['textBaseline']
+    );
   }
 }
 
